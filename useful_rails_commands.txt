@@ -1,0 +1,15 @@
+# Scaffolding:
+rails generate scaffold <Model_Name> <attribute>:<type>
+example: rails generate scaffold Product title:string description:text image_url:string price:decimal
+
+# Migrations
+rake db:migrate
+
+# Unit and functional tests
+rake test
+
+# (re)Populate the database
+rake db:seed
+
+# Rollback last migration
+rake db:rollback
