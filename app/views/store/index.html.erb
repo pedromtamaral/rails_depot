@@ -2,7 +2,7 @@
   <p id="notice"><%= notice %></p>
 <% end %>
 
-<h1>Your Pragmatic Catalog</h1>
+<h1>Your Pragmatic Catalog <%= "(" + pluralize(@views, 'views') + ")" if @views > 5 %></h1>
 
 <% @products.each do |product| %>
   <div class="entry">
