@@ -42,7 +42,7 @@ class LineItemsController < ApplicationController
   def create
     @cart = current_cart
     product = Product.find(params[:product_id])
-    @line_item = @cart.add_product(product.id)
+    @line_item = @cart.add_product(product)
     session[:counter] = 0
 
     respond_to do |format|
@@ -75,12 +75,23 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   # DELETE /line_items/1.json
   def destroy
+    # Going to skip cart validation for simplicity....
     @line_item = LineItem.find(params[:id])
     @line_item.destroy
-
-    respond_to do |format|
-      format.html { redirect_to line_items_url }
-      format.json { head :no_content }
+    
+    if current_cart.line_items.empty?
+      current_cart.delete
+      session[:cart_id] = nil
+      
+      respond_to do |format|
+        format.html { redirect_to store_url, notice: "Your cart is currently empty" }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to current_cart }
+        format.json { head :no_content }
+      end
     end
   end
 end

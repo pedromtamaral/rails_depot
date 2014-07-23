@@ -20,7 +20,13 @@ class LineItemsControllerTest < ActionController::TestCase
     assert_difference('LineItem.count') do
       post :create, product_id: products(:ruby).id
     end
-
+    assert_equal LineItem.last.product.price, products(:ruby).price
+    assert_redirected_to cart_path(assigns(:line_item).cart)
+    
+    assert_difference('LineItem.count', 0) do
+      post :create, product_id: products(:ruby).id
+    end
+    assert_equal LineItem.last.quantity, 2
     assert_redirected_to cart_path(assigns(:line_item).cart)
   end
 
